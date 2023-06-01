@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-export-deployment
+spec:
+  selector:
+    matchLabels:
+      app: mysql-export
+  template:
+    metadata:
+      labels:
+        app: mysql-export
+    spec:
+      containers:
+      - name: mysql-export
+        image: prom/mysqld-exporter:latest
+        resources: {}
+        ports:
+        - containerPort: 9104
+        env:
+          - name: ROOT_PASSWORD
+            value: '123'
+          - name: DATA_SOURCE_NAME
+            value: "exporter:1234@(mysql:3306)/"
+          - name: collect.global_status
+            value: 'true'
+          - name: collect.info_schema.innodb_metrics
+            value: 'true'
+          - name: collect.auto_increment.columns
+            value: 'true'
+          - name: collect.info_schema.processlist
+            value: 'true'
+          - name: collect.binlog_size
+            value: 'true'
+          - name: collect.info_schema.tablestats
+            value: 'true'
+          - name: collect.global_variables
+            value: 'true'
+          - name: collect.info_schema.query_response_time
+            value: 'true'
+          - name: collect.info_schema.userstats
+            value: 'true'
+          - name: collect.info_schema.tables
+            value: 'true'
+          - name: collect.perf_schema.tablelocks
+            value: 'true'
+          - name: collect.perf_schema.file_events
+            value: 'true'
+          - name: collect.perf_schema.eventswaits
+            value: 'true'
+          - name: collect.perf_schema.indexiowaits
+            value: 'true'
+          - name: collect.perf_schema.tableiowaits
+            value: 'true'
+      
